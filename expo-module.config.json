@@ -6,12 +6,12 @@
   ],
   "apple": {
     "modules": [
-      "DigistoneNfcModule"
+      "ExpoNfcModule"
     ]
   },
-  "android": {
+  "android": {          
     "modules": [
-      "expo.modules.digistonenfcmodule.DigistoneNfcModule"
+      "expo.modules.exponfc.ExpoNfcModule"
     ]
   }
 }
