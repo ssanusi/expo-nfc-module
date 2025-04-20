@@ -29,7 +29,28 @@ For bare React Native projects, ensure you have [installed and configured the `e
 npm install expo-nfc-module
 ```
 
-### Configure for Android
+### Automatic Configuration (Expo Config Plugin)
+
+As of version 0.2.2, this module includes an Expo Config Plugin that automatically configures your project for NFC functionality on both iOS and Android. The plugin handles all the necessary configuration steps when you build your app.
+
+**No manual configuration is required for Expo projects!**
+
+The config plugin automatically:
+
+- For iOS:
+  - Adds NFCReaderUsageDescription to Info.plist
+  - Adds NFC reader session formats (NDEF and TAG) to Info.plist
+  - Configures Near Field Communication Tag Reading capability
+
+- For Android:
+  - Adds NFC permission to AndroidManifest.xml
+  - Adds NFC hardware feature requirement
+
+### Manual Configuration (if needed)
+
+If you're not using the Expo Config Plugin system, you can manually configure your project:
+
+#### Configure for Android
 
 Add the following permissions to your `AndroidManifest.xml` file:
 
@@ -38,7 +59,9 @@ Add the following permissions to your `AndroidManifest.xml` file:
 <uses-feature android:name="android.hardware.nfc" android:required="true" />
 ```
 
-### Configure for iOS
+#### Configure for iOS
+
+Follow these steps to configure your iOS project:
 
 1. Run `npx pod-install` after installing the npm package.
 
@@ -161,12 +184,18 @@ type NfcErrorEventPayload = {
 - NFC functionality requires iPhone 7 or newer running iOS 13+
 - The app must be in the foreground to use NFC
 - iOS will show a system dialog for NFC operations
+- Requires an Apple Developer account with NFC entitlements
 
 ### Android
 
 - Device must have NFC hardware
 - NFC must be enabled in the device settings
 - For optimal user experience, instruct users to hold the tag against the back of their device
+
+### Important Requirements
+
+- NFC functionality requires a development or production build (won't work in Expo Go)
+- Only works on physical devices with NFC capabilities (not simulators/emulators)
 
 ## Example
 
