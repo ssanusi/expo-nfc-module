@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "apple",
+    "android",
+    "web"
+  ],
+  "apple": {
+    "modules": [
+      "DigistoneNfcModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "expo.modules.digistonenfcmodule.DigistoneNfcModule"
+    ]
+  }
+}
