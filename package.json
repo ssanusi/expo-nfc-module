@@ -1,6 +1,6 @@
 {
   "name": "expo-nfc-module",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A cross-platform NFC module for Expo and React Native that enables reading and writing URL links to NFC tags on both iOS and Android",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -36,7 +36,9 @@
   "author": "Sulaiman Sanusi <sulaimaan.sanusi@gamil.com> (https://github.com/ssanusi)",
   "license": "MIT",
   "homepage": "https://github.com/ssanusi/expo-nfc-module#readme",
-  "dependencies": {},
+  "dependencies": {
+    "@expo/config-plugins": "^7.0.0"
+  },
   "devDependencies": {
     "@types/react": "~18.3.12",
     "expo-module-scripts": "^4.0.4",
@@ -47,5 +49,9 @@
     "expo": "*",
     "react": "*",
     "react-native": "*"
+  },
+  "expo": {
+    "name": "expo-nfc-module",
+    "plugin": "./plugin"
   }
 }
