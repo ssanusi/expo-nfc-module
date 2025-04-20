@@ -1,7 +1,7 @@
 {
-  "name": "digistone-nfc-module",
-  "version": "0.1.0",
-  "description": "My new module",
+  "name": "expo-nfc-module",
+  "version": "0.2.0",
+  "description": "A cross-platform NFC module for Expo and React Native that enables reading and writing URL links to NFC tags on both iOS and Android",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -18,16 +18,21 @@
   "keywords": [
     "react-native",
     "expo",
-    "digistone-nfc-module",
-    "DigistoneNfcModule"
+    "nfc",
+    "ndef",
+    "nfc-tags",
+    "nfc-reader",
+    "nfc-writer",
+    "expo-nfc-module",
+    "expo-module"
   ],
-  "repository": "https://github.com/ssanusi/digistone-nfc-module",
+  "repository": "https://github.com/ssanusi/expo-nfc-module",
   "bugs": {
-    "url": "https://github.com/ssanusi/digistone-nfc-module/issues"
+    "url": "https://github.com/ssanusi/expo-nfc-module/issues"
   },
   "author": "Sulaiman Sanusi <sulaimaan.sanusi@gamil.com> (https://github.com/ssanusi)",
   "license": "MIT",
-  "homepage": "https://github.com/ssanusi/digistone-nfc-module#readme",
+  "homepage": "https://github.com/ssanusi/expo-nfc-module#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/react": "~18.3.12",

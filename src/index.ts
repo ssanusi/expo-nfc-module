@@ -1,5 +1,27 @@
-// Reexport the native module. On web, it will be resolved to DigistoneNfcModule.web.ts
-// and on native platforms to DigistoneNfcModule.ts
-export { default } from './DigistoneNfcModule';
-export { default as DigistoneNfcModuleView } from './DigistoneNfcModuleView';
-export * from  './DigistoneNfcModule.types';
+// Reexport the native module. On web, it will be resolved to ExpoNfcModule.web.ts
+// and on native platforms to ExpoNfcModule.ts
+import ExpoNfcModule, {
+  isNfcAvailable,
+  startNfcScan,
+  stopNfcScan,
+  writeUrlToTag,
+  cancelWriteToTag,
+  addNfcTagDiscoveredListener,
+  addNfcTagWrittenListener,
+  addNfcErrorListener
+} from './ExpoNfcModule';
+
+export {
+  isNfcAvailable,
+  startNfcScan,
+  stopNfcScan,
+  writeUrlToTag,
+  cancelWriteToTag,
+  addNfcTagDiscoveredListener,
+  addNfcTagWrittenListener,
+  addNfcErrorListener
+};
+
+export * from './ExpoNfcModule.types';
+
+export default ExpoNfcModule;
