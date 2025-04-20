@@ -26,7 +26,10 @@
     "expo-nfc-module",
     "expo-module"
   ],
-  "repository": "https://github.com/ssanusi/expo-nfc-module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssanusi/expo-nfc-module.git"
+  },
   "bugs": {
     "url": "https://github.com/ssanusi/expo-nfc-module/issues"
   },
