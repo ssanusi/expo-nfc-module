@@ -1,11 +1,11 @@
 import { requireNativeView } from 'expo';
-import * as React from 'react';
+import type * as React from 'react';
 
-import { ExpoNfcModuleViewProps } from './ExpoNfcModule.types';
+import type { ExpoNfcModuleViewProps } from './ExpoNfcModule.types';
 
 const NativeView: React.ComponentType<ExpoNfcModuleViewProps> =
-  requireNativeView('DigistoneNfcModule');
+  requireNativeView('ExpoNfcModule');
 
-export default function ExpoNfcModuleView(props: ExpoNfcModuleViewProps) {
+export default function ExpoNfcModuleView(props: Readonly<ExpoNfcModuleViewProps>) {
   return <NativeView {...props} />;
 }

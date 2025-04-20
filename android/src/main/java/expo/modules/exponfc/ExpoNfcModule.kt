@@ -34,7 +34,7 @@ class ExpoNfcModule : Module() {
 
   override fun definition() = ModuleDefinition {
     // Sets the name of the module that JavaScript code will use to refer to the module
-    Name("DigistoneNfcModule") // Keep the original name for JS compatibility
+    Name("ExpoNfcModule")
 
     // Defines event names that the module can send to JavaScript
     Events("onNfcTagDiscovered", "onNfcTagWritten", "onNfcError")

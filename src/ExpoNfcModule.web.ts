@@ -6,10 +6,6 @@ import type { NfcErrorEventPayload, ExpoNfcModuleEvents } from './ExpoNfcModule.
  * Note: Web browsers have limited NFC support, so most functions will return errors
  */
 class ExpoNfcModule extends EventEmitter<ExpoNfcModuleEvents> {
-  constructor() {
-    super(null as any);
-  }
-
   /**
    * Check if NFC is available on the device
    * On web, this checks if the Web NFC API is available

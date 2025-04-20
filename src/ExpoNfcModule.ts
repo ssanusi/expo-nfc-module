@@ -2,10 +2,10 @@ import { EventEmitter, requireNativeModule } from 'expo-modules-core';
 import type { NfcErrorEventPayload, NfcTagDiscoveredEventPayload, NfcTagWrittenEventPayload, ExpoNfcModuleEvents } from './ExpoNfcModule.types';
 
 // Load the native module
-const ExpoNfcModule = requireNativeModule('DigistoneNfcModule');
+const ExpoNfcModule = requireNativeModule('ExpoNfcModule');
 
 // Create an event emitter to handle NFC events
-const emitter = new EventEmitter<ExpoNfcModuleEvents>(ExpoNfcModule);
+const emitter = new EventEmitter<ExpoNfcModuleEvents>();
 
 /**
  * Check if NFC is available on the device
