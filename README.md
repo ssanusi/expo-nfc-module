@@ -29,26 +29,9 @@ For bare React Native projects, ensure you have [installed and configured the `e
 npm install expo-nfc-module
 ```
 
-### Automatic Configuration (Expo Config Plugin)
+### Required Configuration
 
-As of version 0.2.2, this module includes an Expo Config Plugin that automatically configures your project for NFC functionality on both iOS and Android. The plugin handles all the necessary configuration steps when you build your app.
-
-**No manual configuration is required for Expo projects!**
-
-The config plugin automatically:
-
-- For iOS:
-  - Adds NFCReaderUsageDescription to Info.plist
-  - Adds NFC reader session formats (NDEF and TAG) to Info.plist
-  - Configures Near Field Communication Tag Reading capability
-
-- For Android:
-  - Adds NFC permission to AndroidManifest.xml
-  - Adds NFC hardware feature requirement
-
-### Manual Configuration (if needed)
-
-If you're not using the Expo Config Plugin system, you can manually configure your project:
+This module requires specific configurations for both iOS and Android platforms. Please follow these steps carefully:
 
 #### Configure for Android
 
@@ -56,28 +39,32 @@ Add the following permissions to your `AndroidManifest.xml` file:
 
 ```xml
 <uses-permission android:name="android.permission.NFC" />
-<uses-feature android:name="android.hardware.nfc" android:required="true" />
+<uses-feature android:name="android.hardware.nfc" android:required="false" />
 ```
+
+> **Note**: Setting `android:required="false"` allows your app to be installed on devices without NFC hardware, but you should check for NFC availability in your app using `isNfcAvailable()` before attempting to use NFC features.
 
 #### Configure for iOS
 
 Follow these steps to configure your iOS project:
 
-1. Run `npx pod-install` after installing the npm package.
+1. Run `npx pod-install` after installing the npm package
 
 2. Add the following to your `Info.plist` file:
 
-```xml
-<key>NFCReaderUsageDescription</key>
-<string>This app needs access to NFC to read and write NFC tags</string>
-<key>com.apple.developer.nfc.readersession.formats</key>
-<array>
-  <string>NDEF</string>
-  <string>TAG</string>
-</array>
-```
+   ```xml
+   <key>NFCReaderUsageDescription</key>
+   <string>This app needs access to NFC to read and write NFC tags</string>
+   <key>com.apple.developer.nfc.readersession.formats</key>
+   <array>
+     <string>NDEF</string>
+     <string>TAG</string>
+   </array>
+   ```
 
-3. Enable the Near Field Communication Tag Reading capability in your Xcode project.
+3. Enable the Near Field Communication Tag Reading capability in your Xcode project
+
+4. Ensure your Apple Developer account has NFC entitlements enabled for your app
 
 ## API Reference
 
@@ -177,29 +164,119 @@ type NfcErrorEventPayload = {
 };
 ```
 
-## Platform-Specific Notes
+## Important Requirements and Limitations
 
-### iOS
+### Development Environment
 
-- NFC functionality requires iPhone 7 or newer running iOS 13+
+- **Development/Production Builds Only**: NFC functionality requires a development or production build and **will not work in Expo Go**
+- **Physical Devices Only**: NFC only works on physical devices with NFC capabilities (not simulators/emulators)
+- For Expo projects, you must create a development or production build using EAS Build or the local build process
+
+### iOS Requirements
+
+- iPhone 7 or newer running iOS 13+
 - The app must be in the foreground to use NFC
 - iOS will show a system dialog for NFC operations
 - Requires an Apple Developer account with NFC entitlements
+- Apple requires a privacy usage description in Info.plist
 
-### Android
+### Android Requirements
 
 - Device must have NFC hardware
 - NFC must be enabled in the device settings
 - For optimal user experience, instruct users to hold the tag against the back of their device
+- Some Android devices may require specific positioning of the NFC tag
 
-### Important Requirements
-
-- NFC functionality requires a development or production build (won't work in Expo Go)
-- Only works on physical devices with NFC capabilities (not simulators/emulators)
-
-## Example
+## Example Usage
 
 A complete example application is available in the `example` directory of this repository.
+
+### Basic Implementation
+
+```javascript
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, Alert } from 'react-native';
+import * as ExpoNfcModule from 'expo-nfc-module';
+
+export default function NfcScreen() {
+  const [isNfcAvailable, setIsNfcAvailable] = useState(false);
+  const [tagData, setTagData] = useState(null);
+  
+  useEffect(() => {
+    // Check if NFC is available on the device
+    checkNfcAvailability();
+    
+    // Set up NFC tag discovered listener
+    const subscription = ExpoNfcModule.addNfcTagDiscoveredListener((event) => {
+      setTagData(event);
+    });
+    
+    // Clean up listener when component unmounts
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
+  const checkNfcAvailability = async () => {
+    const available = await ExpoNfcModule.isNfcAvailable();
+    setIsNfcAvailable(available);
+  };
+  
+  const startScanning = async () => {
+    try {
+      await ExpoNfcModule.startNfcScan();
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+  
+  const stopScanning = async () => {
+    try {
+      await ExpoNfcModule.stopNfcScan();
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+  
+  const writeUrl = async () => {
+    try {
+      await ExpoNfcModule.writeUrlToTag('https://example.com');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+  
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+      <Text style={{ marginBottom: 20 }}>
+        NFC Available: {isNfcAvailable ? 'Yes' : 'No'}
+      </Text>
+      
+      {tagData && (
+        <View style={{ marginBottom: 20 }}>
+          <Text>Tag ID: {tagData.id}</Text>
+          <Text>Data: {tagData.data || 'No data'}</Text>
+        </View>
+      )}
+      
+      <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
+        <Button title="Start Scan" onPress={startScanning} disabled={!isNfcAvailable} />
+        <Button title="Stop Scan" onPress={stopScanning} disabled={!isNfcAvailable} />
+        <Button title="Write URL" onPress={writeUrl} disabled={!isNfcAvailable} />
+      </View>
+    </View>
+  );
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+- **"NFC not available"**: Ensure the device has NFC hardware and it's enabled in settings
+- **iOS NFC not working**: Verify you have the proper entitlements in your Apple Developer account
+- **Android NFC not detecting tags**: Make sure NFC is enabled in device settings and try different positions
+- **Expo Go not working**: Remember that NFC requires a development or production build
 
 ## Contributing
 
